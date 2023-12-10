@@ -16,19 +16,32 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     let itemsPerRow = 4
     
+    var consentration = Concentration()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         cardsCollectionView.delegate = self
         cardsCollectionView.dataSource = self
+        
+        consentration.newGame(cardsSet: 6)
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 12
+        return consentration.cards.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardCollectionViewCell", for: indexPath) as! CardCollectionViewCell
+        
+        let data = consentration.cards[indexPath.item]
+        cell.emojiLabel.text = data.isFlip ? data.title : ""
+        
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        consentration.selectedCard(cardIndex: indexPath.item)
+        collectionView.reloadData()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
