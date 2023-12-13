@@ -71,7 +71,6 @@ class Concentration {
             cards[previousCardIndex].isMatch = condition
             self.score += condition ? 2 : 0
             self.previousCardIndex = nil
-            
         } else {
             
             for i in cards.indices {

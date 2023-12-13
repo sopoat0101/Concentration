@@ -17,6 +17,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     let itemsPerRow = 4
     
     var consentration = Concentration()
+    var matchIds: [Int] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,14 +41,32 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        consentration.selectedCard(cardIndex: indexPath.item)
-        collectionView.reloadData()
+        
+        self.consentration.cards.enumerated().forEach({ index, item in
+            if item.isMatch {
+                let index = IndexPath(item: index, section: 0)
+                let cell = collectionView.cellForItem(at: index)
+                cell?.isHidden = true
+            }
+        })
+        
+        UIView.performWithoutAnimation {
+            consentration.selectedCard(cardIndex: indexPath.item)
+            collectionView.reloadItems(at: [indexPath])
+            
+            self.consentration.cards.enumerated().forEach({ index, item in
+                if !item.isFlip && !item.isMatch {
+                    let index = IndexPath(item: index, section: 0)
+                    collectionView.reloadItems(at: [index])
+                }
+            })
+        }
+        
+        // TODO: if all match should display newGame or You Win alert!
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.frame.width / 4) - (5 + (10 / 4))
         return CGSize(width: width, height: width * 1.3)
     }
-
 }
-
