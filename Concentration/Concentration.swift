@@ -48,6 +48,15 @@ class Concentration {
             let card = Card(title: emojis[i])
             cards += [card, card]
         }
+        
+        // DO shuffle the deck
+        var shuffledDeck: [Card] = []
+        for _ in 0..<(cardsSet * 2) {
+            let random = Int.random(in: 0..<cards.count)
+            shuffledDeck.append(cards[random])
+            cards.remove(at: random)
+        }
+        cards = shuffledDeck
     }
     
     func checkAllMatch() -> Bool {
