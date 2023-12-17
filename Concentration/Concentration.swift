@@ -58,6 +58,7 @@ class Concentration {
         cards = []
         score = 0
         flips = 0
+        
         previousCardIndex = nil
     }
     
