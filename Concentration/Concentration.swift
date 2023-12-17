@@ -8,7 +8,6 @@
 import Foundation
 
 struct Card {
-    var title: String
     var isMatch = false
     var isFlip = false
     let identifier: Int
@@ -20,18 +19,12 @@ struct Card {
         return identifierFactory
     }
     
-    init(title: String){
-        self.title = title
+    init(){
         self.identifier = Card.getIdentifier()
     }
 }
 
 class Concentration {
-    static var thame: [String:[String]] = 
-    [
-        "faces": ["😀","😢","😉", "😝", "😍", "🥳"],
-        "christmas": ["🎄","🌲","🎅🏻", "🧑🏻‍🎄", "❄️", "⛄️"],
-    ]
     
     var score = 0
     var flips = 0
@@ -41,11 +34,13 @@ class Concentration {
     var previousCardIndex: Int?
     
     func newGame(cardsSet: Int) {
-        guard cardsSet <= 6, let emojis = Concentration.thame["faces"] else {
+        resetGame()
+        
+        guard cardsSet <= 6 else {
             return
         }
-        for i in 0..<cardsSet {
-            let card = Card(title: emojis[i])
+        for _ in 0..<cardsSet {
+            let card = Card()
             cards += [card, card]
         }
         
@@ -59,8 +54,20 @@ class Concentration {
         cards = shuffledDeck
     }
     
+    func resetGame(){
+        cards = []
+        score = 0
+        flips = 0
+        previousCardIndex = nil
+    }
+    
     func checkAllMatch() -> Bool {
         let result = self.cards.filter({ $0.isMatch == false })
+        return result.isEmpty
+    }
+    
+    func isGameEnd() -> Bool {
+        let result = cards.filter({ !$0.isMatch })
         return result.isEmpty
     }
     
