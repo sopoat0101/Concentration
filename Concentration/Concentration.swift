@@ -37,6 +37,7 @@ class Concentration {
         resetGame()
         
         guard cardsSet <= 6 else {
+            resetGame()
             return
         }
         for _ in 0..<cardsSet {
@@ -62,17 +63,12 @@ class Concentration {
         previousCardIndex = nil
     }
     
-    func checkAllMatch() -> Bool {
-        let result = self.cards.filter({ $0.isMatch == false })
-        return result.isEmpty
-    }
-    
     func isGameEnd() -> Bool {
         let result = cards.filter({ !$0.isMatch })
         return result.isEmpty
     }
     
-    func selectedCard(cardIndex: Int){
+    func selectedCard(cardIndex: Int) {
         // when user selected card
         
         guard !cards[cardIndex].isMatch, cardIndex != previousCardIndex else {
